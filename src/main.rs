@@ -1,3 +1,5 @@
+use colored::*;
+
 struct Game {
     name: String,
     description: String,
@@ -36,9 +38,11 @@ fn main() {
     let mut probability: u16 = 1; // Win chance __cannot__ exceed 65535
     for i in 0..games.len() {
         println!("{}", games[i].name);
-        println!("{}", games[i].description);
+        println!("{}", games[i].description.dimmed());
         println!("(1/{} odds) \n", games[i].probability);
         probability *= games[i].probability as u16;
     }
+    println!("{}{}{}", "There is a 1/".bright_red(), probability.to_string().bright_red(), " chance of passing every game".bright_red());
+
     assert!(probability > 200, "There must be no more than a 1/200 chance of winning");
 }
