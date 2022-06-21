@@ -1,4 +1,5 @@
 use colored::*;
+use rand::Rng;
 
 struct Game {
     name: String,
@@ -43,6 +44,19 @@ fn main() {
         probability *= games[i].probability as u16;
     }
     println!("{}{}{}", "There is a 1/".bright_red(), probability.to_string().bright_red(), " chance of passing every game".bright_red());
+
+    // let mut vec = Vec::new();
+    let mut vec = vec![0; games.len()];
+    for _i in 0..200 {
+        'game: for j in 0..games.len() {
+            if rand::thread_rng().gen_range(0, games[j].probability) != 0 {
+                vec[j] += 1;
+                break 'game
+            }
+        }
+    }
+
+    println!("{:?}", vec);
 
     assert!(probability > 200, "There must be no more than a 1/200 chance of winning");
 }
