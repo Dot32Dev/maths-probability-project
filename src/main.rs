@@ -66,7 +66,7 @@ fn main() {
 
     // println!("{:?}", vec);
 
-    println!("\n{}_|_Winners_|_%_Won_|_%_Expected_|", format!("{:_^1$}", "Game".bold(), name_width)); // handy format string code I found online
+    println!("\n{}{}", format!("{:_^1$}", "Game".bold(), name_width).to_string().on_black(), "_|_Winners_|_%_Won_|_%_Expected_|".on_black()); // handy format string code I found online
     let mut winners = SAMPLE_SIZE;
     let mut percent_won: f32;
     for i in 0..games.len() {
