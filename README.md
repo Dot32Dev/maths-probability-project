@@ -6,6 +6,4 @@ The task sheet suggests you to test your games on friends, however as I am lacki
 
 This is the perfect way to convince myself to study for something after all.
 
-![image](https://cdn.discordapp.com/attachments/577832597686583310/988456471035514950/Screen_Shot_2022-06-20_at_22.51.28.png)
-
-Actually running the simulations is not yet implemented.
+![image](https://cdn.discordapp.com/attachments/922185010205822979/989114264432287744/Screen_Shot_2022-06-22_at_18.25.50.png)
