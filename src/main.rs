@@ -1,6 +1,8 @@
 use colored::*;
 use rand::Rng;
 
+const SAMPLE_SIZE: u16 = 1000;
+
 struct Game {
     name: String,
     description: String,
@@ -37,26 +39,50 @@ fn main() {
     ];
 
     let mut probability: u16 = 1; // Win chance __cannot__ exceed 65535
+    let mut name_width: usize = "game".chars().count();
     for i in 0..games.len() {
         println!("{}", games[i].name);
         println!("{}", games[i].description.dimmed());
         println!("(1/{} odds) \n", games[i].probability);
-        probability *= games[i].probability as u16;
-    }
-    println!("{}{}{}", "There is a 1/".bright_red(), probability.to_string().bright_red(), " chance of passing every game".bright_red());
 
-    // let mut vec = Vec::new();
-    let mut vec = vec![0; games.len()];
-    for _i in 0..200 {
+        probability *= games[i].probability as u16;
+        name_width = (games[i].name.chars().count()).max(name_width);
+    }
+    assert!(probability > 200, "There must be no more than a 1/200 chance of winning");
+
+    println!("{}{}{}", "There is a 1/".bright_red(), probability.to_string().bright_red(), " chance of passing every game".bright_red());
+    println!("{}{}{}", "There are ".bright_yellow(), SAMPLE_SIZE.to_string().bright_yellow(), " games being simulated".bright_yellow());
+
+    // Simulating the games
+    let mut sim = vec![0; games.len()];
+    for _i in 0..SAMPLE_SIZE {
         'game: for j in 0..games.len() {
             if rand::thread_rng().gen_range(0, games[j].probability) != 0 {
-                vec[j] += 1;
+                sim[j] += 1;
                 break 'game
             }
         }
     }
 
-    println!("{:?}", vec);
+    // println!("{:?}", vec);
 
-    assert!(probability > 200, "There must be no more than a 1/200 chance of winning");
+    println!("\n{}_|_Winners_|_%_Won_|", format!("{:_^1$}", "Game".bold(), name_width)); // handy format string code I found online
+    let mut winners = SAMPLE_SIZE;
+    let mut percent_won: f32;
+    for i in 0..games.len() {
+        // percent_won = (winners-sim[i])/winners*100;
+        winners -= sim[i];
+        percent_won = if winners+sim[i] != 0 {
+            (100.0/(winners as f32 + sim[i] as f32)*winners as f32).floor()
+        }  else {
+            0.0
+        };
+        println!("{} |{} |{} |", 
+            format!("{: <1$}", games[i].name, name_width), 
+            format!("{: <1$}", winners, 8),
+            format!("{: <1$}%", percent_won, 5),
+        );
+    }
+
+    println!("\n{}{}\n", winners.to_string().bright_green(), " people won the game".bright_green());
 }
