@@ -1,7 +1,7 @@
 use colored::*;
 use rand::Rng;
 
-const SAMPLE_SIZE: u16 = 1000;
+const SAMPLE_SIZE: u16 = 200;
 
 struct Game {
     name: String,
@@ -66,7 +66,7 @@ fn main() {
 
     // println!("{:?}", vec);
 
-    println!("\n{}_|_Winners_|_%_Won_|", format!("{:_^1$}", "Game".bold(), name_width)); // handy format string code I found online
+    println!("\n{}_|_Winners_|_%_Won_|_%_Expected_|", format!("{:_^1$}", "Game".bold(), name_width)); // handy format string code I found online
     let mut winners = SAMPLE_SIZE;
     let mut percent_won: f32;
     for i in 0..games.len() {
@@ -77,10 +77,11 @@ fn main() {
         }  else {
             0.0
         };
-        println!("{} |{} |{} |", 
+        println!("{} |{} |{} |{} |", 
             format!("{: <1$}", games[i].name, name_width), 
             format!("{: <1$}", winners, 8),
             format!("{: <1$}%", percent_won, 5),
+            format!("{: <1$}%", 100/games[i].probability, 10),
         );
     }
 
